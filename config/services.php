@@ -35,4 +35,14 @@ return [
         ],
     ],
 
+    // AI採点で使うClaude API(Messages API)のキー。https://console.anthropic.com で発行する。
+    'anthropic' => [
+        'api_key' => env('ANTHROPIC_API_KEY'),
+    ],
+
+    // GradingServiceの実装切り替え。通常はclaude、テストはfakeに固定する(.env.testing参照)。
+    'grading' => [
+        'driver' => env('GRADING_DRIVER', 'claude'),
+    ],
+
 ];
