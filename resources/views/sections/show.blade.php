@@ -38,14 +38,8 @@
         </div>
     </div>
 
-    {{-- 回答・履歴機能は次のステップ以降で実装するため、ルートが揃うまでは表示しない --}}
+    {{-- 履歴・回答機能は次のステップ以降で実装するため、ルートが揃うまでは表示しない --}}
     <div class="mb-8 flex flex-wrap gap-3">
-        @if (Route::has('questions.create'))
-            <a href="{{ route('questions.create', $section) }}"
-                class="flex min-h-11 items-center rounded-lg bg-brand-600 px-4 text-sm font-medium text-white transition-colors hover:bg-brand-700">
-                + 問題を追加
-            </a>
-        @endif
         @if (Route::has('answers.create') && $count > 0)
             <a href="{{ route('answers.create', $section) }}"
                 class="flex min-h-11 items-center rounded-lg border border-brand-600 px-4 text-sm font-medium text-brand-700 transition-colors hover:bg-brand-50">
@@ -60,7 +54,15 @@
         @endif
     </div>
 
-    <h2 class="mb-4 font-medium tracking-tight">問題一覧</h2>
+    <div class="mb-4 flex items-center justify-between">
+        <h2 class="font-medium tracking-tight">問題一覧</h2>
+        @if (Route::has('questions.create'))
+            <a href="{{ route('questions.create', $section) }}"
+                class="flex min-h-11 items-center rounded-lg bg-brand-600 px-4 text-sm font-medium text-white transition-colors hover:bg-brand-700">
+                + 問題を追加
+            </a>
+        @endif
+    </div>
 
     @if ($section->questions->isEmpty())
         <p class="text-sm text-zinc-500">まだ問題がありません。</p>
