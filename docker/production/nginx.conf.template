@@ -1,0 +1,28 @@
+# Railwayが起動時に注入するPORT環境変数でリッスンする(entrypoint.shがenvsubstでこのテンプレートから
+# 実ファイルを生成する)。$uri等のnginx変数はenvsubstの対象に含めていないのでそのまま残る。
+server {
+    listen ${PORT};
+    index index.php;
+    root /var/www/html/public;
+
+    client_max_body_size 10M;
+
+    location / {
+        try_files $uri $uri/ /index.php?$query_string;
+    }
+
+    # Claude APIへの一括採点リクエスト(Web検索を挟むと数十秒かかりうる)が
+    # デフォルトの60秒でタイムアウトしないよう、fastcgi_read_timeoutを延長する。
+    location ~ \.php$ {
+        fastcgi_pass 127.0.0.1:9000;
+        fastcgi_index index.php;
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+        include fastcgi_params;
+        fastcgi_read_timeout 300;
+    }
+
+    # .env等の隠しファイルへの直アクセスを防ぐ
+    location ~ /\.(?!well-known).* {
+        deny all;
+    }
+}
