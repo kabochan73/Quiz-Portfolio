@@ -16,8 +16,7 @@ class AnswerRetentionService
 {
     public function __construct(
         private readonly int $keep = 10,
-    ) {
-    }
+    ) {}
 
     public function pruneOldAnswers(Question $question, User $user): void
     {

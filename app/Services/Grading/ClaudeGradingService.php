@@ -9,6 +9,7 @@ use Anthropic\Messages\ToolChoiceAuto;
 use Anthropic\Messages\ToolUseBlock;
 use Anthropic\Messages\WebSearchTool20260209;
 use App\Enums\GradingLevel;
+use App\Models\Question;
 use RuntimeException;
 
 /**
@@ -163,7 +164,7 @@ class ClaudeGradingService implements GradingService
     /**
      * 選択された全問題を「【問題0】...【回答0】...」の形でまとめて1つのメッセージにする。
      *
-     * @param  array<int, array{question: \App\Models\Question, body: string}>  $items
+     * @param  array<int, array{question: Question, body: string}>  $items
      */
     private function userPrompt(array $items): string
     {

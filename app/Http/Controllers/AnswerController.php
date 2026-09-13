@@ -18,8 +18,7 @@ class AnswerController extends Controller
     public function __construct(
         private readonly GradingService $grader,
         private readonly AnswerRetentionService $retention,
-    ) {
-    }
+    ) {}
 
     /**
      * セクション内の全問題に対する一括回答フォームを表示する。
