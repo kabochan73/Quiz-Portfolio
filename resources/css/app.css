@@ -6,6 +6,22 @@
 @theme {
     --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
         'Segoe UI Symbol', 'Noto Color Emoji';
+
+    /*
+     * アクセントカラーを"brand"というセマンティックな名前で定義する。
+     * 実体はTailwind標準のsky(水色)を参照するだけなので、後で色を変えたくなっても
+     * ここを差し替えるだけでよく、各Bladeファイルに散らばった色名を書き換えずに済む。
+     */
+    --color-brand-50: var(--color-sky-50);
+    --color-brand-100: var(--color-sky-100);
+    --color-brand-200: var(--color-sky-200);
+    --color-brand-300: var(--color-sky-300);
+    --color-brand-400: var(--color-sky-400);
+    --color-brand-500: var(--color-sky-500);
+    --color-brand-600: var(--color-sky-600);
+    --color-brand-700: var(--color-sky-700);
+    --color-brand-800: var(--color-sky-800);
+    --color-brand-900: var(--color-sky-900);
 }
 
 /* Alpine.jsの初期化前に一瞬だけ中身が見えてしまうのを防ぐ(x-cloak標準の作法) */
