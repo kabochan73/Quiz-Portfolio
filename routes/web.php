@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\CategoryController;
 use Illuminate\Support\Facades\Route;
 
 // アプリの起点はログイン画面(要件定義5章)。ルートは常にログインへ流す。
@@ -18,4 +19,10 @@ Route::middleware('guest')->group(function () {
 // このグループ内に追加していく。
 Route::middleware('auth')->group(function () {
     Route::post('/logout', [LoginController::class, 'destroy'])->name('logout');
+
+    // カテゴリ管理。ログイン後の着地点でもあり、アプリの起点になる。
+    Route::resource('categories', CategoryController::class);
+
+    // sections/questions/answers/history のルートは、各機能を実装するタイミングで
+    // このグループ内に追加していく。
 });

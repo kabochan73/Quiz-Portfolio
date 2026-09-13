@@ -26,6 +26,29 @@ test('誤った認証情報ではログインできず、エラーメッセー�
     $this->assertGuest();
 });
 
+test('正しい認証情報でログインするとカテゴリ一覧へリダイレクトされる', function () {
+    User::factory()->create([
+        'email' => 'admin@example.com',
+        'password' => 'correct-password',
+    ]);
+
+    $response = $this->post('/login', [
+        'email' => 'admin@example.com',
+        'password' => 'correct-password',
+    ]);
+
+    $response->assertRedirect(route('categories.index'));
+    $this->assertAuthenticated();
+});
+
+test('ログイン済みで/loginにアクセスするとカテゴリ一覧へリダイレクトされる', function () {
+    $user = User::factory()->create();
+
+    $response = $this->actingAs($user)->get('/login');
+
+    $response->assertRedirect(route('categories.index'));
+});
+
 test('未入力でログインしようとするとバリデーションエラーになる', function () {
     $response = $this->post('/login', [
         'email' => '',
@@ -45,9 +68,7 @@ test('ログイン済みユーザーはログアウトできる', function () {
 });
 
 test('未ログインで保護されたルートにアクセスするとログイン画面へリダイレクトされる', function () {
-    // 現時点でauthミドルウェア配下にあるのは/logoutのみ。
-    // categories等のルートを実装した際に、そちらでも同様のテストを追加する。
-    $response = $this->post('/logout');
+    $response = $this->get(route('categories.index'));
 
     $response->assertRedirect('/login');
 });
