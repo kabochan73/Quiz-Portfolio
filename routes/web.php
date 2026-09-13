@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\SectionController;
 use Illuminate\Support\Facades\Route;
 
@@ -34,6 +35,15 @@ Route::middleware('auth')->group(function () {
     Route::put('/sections/{section}', [SectionController::class, 'update'])->name('sections.update');
     Route::delete('/sections/{section}', [SectionController::class, 'destroy'])->name('sections.destroy');
 
-    // questions/answers/history のルートは、各機能を実装するタイミングで
-    // このグループ内に追加していく。
+    // 問題は必ずセクションに紐づくため、作成はセクション配下のURLにする(選択の必要がない)。
+    Route::get('/sections/{section}/questions/create', [QuestionController::class, 'create'])->name('questions.create');
+    Route::post('/sections/{section}/questions', [QuestionController::class, 'store'])->name('questions.store');
+
+    // 詳細プレビュー・編集・削除は問題IDだけで一意に決まるのでフラットなURLのまま。
+    Route::get('/questions/{question}', [QuestionController::class, 'show'])->name('questions.show');
+    Route::get('/questions/{question}/edit', [QuestionController::class, 'edit'])->name('questions.edit');
+    Route::put('/questions/{question}', [QuestionController::class, 'update'])->name('questions.update');
+    Route::delete('/questions/{question}', [QuestionController::class, 'destroy'])->name('questions.destroy');
+
+    // answers/history のルートは、各機能を実装するタイミングでこのグループ内に追加していく。
 });
