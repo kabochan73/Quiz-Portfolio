@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Services\Answers\AnswerRetentionService;
 use App\Services\Grading\ClaudeGradingService;
 use App\Services\Grading\FakeGradingService;
 use App\Services\Grading\GradingService;
@@ -21,6 +22,11 @@ class AppServiceProvider extends ServiceProvider
             'fake' => new FakeGradingService,
             default => new ClaudeGradingService,
         });
+
+        // AnswerRetentionServiceの保持件数は、テストでconfigを差し替えて境界値検証できるようにする
+        $this->app->when(AnswerRetentionService::class)
+            ->needs('$keep')
+            ->give(fn () => config('quiz.answer_retention_limit'));
     }
 
     /**

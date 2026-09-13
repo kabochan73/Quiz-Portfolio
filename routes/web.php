@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\AnswerController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\SectionController;
@@ -45,5 +46,9 @@ Route::middleware('auth')->group(function () {
     Route::put('/questions/{question}', [QuestionController::class, 'update'])->name('questions.update');
     Route::delete('/questions/{question}', [QuestionController::class, 'destroy'])->name('questions.destroy');
 
-    // answers/history のルートは、各機能を実装するタイミングでこのグループ内に追加していく。
+    // 回答フロー。セクション内の問題(最大10問)をまとめて回答→まとめて採点。
+    Route::get('/sections/{section}/answers/create', [AnswerController::class, 'create'])->name('answers.create');
+    Route::post('/sections/{section}/answers', [AnswerController::class, 'store'])->name('answers.store');
+
+    // history のルートは、履歴機能を実装するタイミングでこのグループ内に追加していく。
 });
