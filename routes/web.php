@@ -3,6 +3,7 @@
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\AnswerController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\HistoryController;
 use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\SectionController;
 use Illuminate\Support\Facades\Route;
@@ -50,5 +51,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/sections/{section}/answers/create', [AnswerController::class, 'create'])->name('answers.create');
     Route::post('/sections/{section}/answers', [AnswerController::class, 'store'])->name('answers.store');
 
-    // history のルートは、履歴機能を実装するタイミングでこのグループ内に追加していく。
+    // セクション単位の回答履歴(挑戦一覧)・履歴詳細
+    Route::get('/sections/{section}/history', [HistoryController::class, 'index'])->name('history.index');
+    Route::get('/sections/{section}/history/{attempt}', [HistoryController::class, 'show'])->name('history.show');
 });
