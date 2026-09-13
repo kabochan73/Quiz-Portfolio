@@ -12,7 +12,10 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
-        //
+        // RailwayはTLSをプロキシ側で終端し、コンテナへはHTTPで転送する。
+        // X-Forwarded-Protoヘッダーを信頼しないと、redirect()等が常にhttp://で
+        // URLを生成してしまう(実際にログイン後のリダイレクトで発生した問題)。
+        $middleware->trustProxies(at: '*');
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         $exceptions->shouldRenderJsonWhen(
